@@ -1,10 +1,9 @@
 package com.codereview
 
 data class Vacancy(
+    val id: String,
     val company: String,
     val vacancy: String,
-    val city: String,
-    val graffic: String,
-    val salary: String,
-    val published: String
+    val published: String,
+    val extras: List<Pair<String?, String?>>
 )
