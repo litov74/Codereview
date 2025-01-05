@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CodeReview</string>
+    <string name="title_one">Junior вакансии и стажировки</string>
+    <string name="title_two">Всё, что нужно, чтобы найти первую работу разработчиком</string>
+    <string name="remote_work">Удаленная работа</string>
+    <string name="junior_jobs">Junior вакансии</string>
+    <string name="internship">Стажировки</string>
 </resources>
