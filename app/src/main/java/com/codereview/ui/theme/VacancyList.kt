@@ -30,9 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codereview.R
 import com.codereview.Vacancy
+import com.codereview.getVacancies
 
 @Composable
-fun VacancyList(vacancies: List<Vacancy>) {
+fun VacancyList(vacanciesArg: String?, vacancies: List<Vacancy> = getVacancies()) {
     LazyColumn(
         Modifier
             .fillMaxSize()
