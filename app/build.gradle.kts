@@ -57,4 +57,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.adaptive.android)
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }

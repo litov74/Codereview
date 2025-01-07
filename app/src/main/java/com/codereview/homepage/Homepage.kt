@@ -1,4 +1,4 @@
-package com.codereview
+package com.codereview.homepage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -30,12 +30,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.codereview.CodeReviewApplication
+import com.codereview.R
 
 @Composable
 fun HomePage(
-    jobsList: List<JobSpec> = JobsList.list,
+    viewModel: HomepageViewModel =
+        viewModel(factory = HomepageViewModelFactory(CodeReviewApplication().jobsRepository)),
     onNavigateToVacancies: (String) -> Unit
 ) {
     Surface(
@@ -54,7 +58,7 @@ fun HomePage(
             ) {
                 ShowGrid(
                     columnsNumber = gridCellsNumber,
-                    jobsList = jobsList,
+                    jobsList = viewModel.listOfJobs,
                     onClicked = onNavigateToVacancies
                 )
             }
