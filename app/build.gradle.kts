@@ -1,7 +1,10 @@
+import com.codereview.gradle.Deps
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -14,8 +17,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -28,35 +29,58 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
+        if (project.findProperty("enableComposeReports") == "true") {
+            freeCompilerArgs += listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose-reports",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose-reports"
+            )
+        }
     }
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Deps.composeCompilerVersion
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+        resources {
+            excludes += setOf("/META-INF/{AL2.0,LGPL2.1}")
+        }
+    }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.adaptive.android)
+    implementation(Deps.composeNavigation)
+    implementation(Deps.androidViewModelScope)
+    implementation(Deps.androidxCore)
+    implementation(Deps.androidxAppCompat)
+    implementation(Deps.googleMaterial)
+    implementation(Deps.composeUi)
+    implementation(Deps.composeMaterial)
+    implementation(Deps.composeUiTooling)
+    implementation(Deps.lifecycleRuntime)
+    implementation(Deps.activityCompose)
+    implementation(Deps.composeMaterial3)
+    implementation(Deps.androidLifecycleCompose)
+    implementation(Deps.hiltNavigation)
+    implementation(Deps.kotlinCollectionsImmutable)
+    implementation(Deps.composeMaterial3Navigation)
+    implementation(Deps.hilt)
+    kapt(Deps.hiltKapt)
 
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    androidTestImplementation(Deps.TestDeps.androidxEspressoCore)
+    androidTestImplementation(Deps.TestDeps.jUnit)
+    androidTestImplementation(Deps.TestDeps.androidxJUnit)
+    androidTestImplementation(Deps.TestDeps.composeUiTest)
 }
