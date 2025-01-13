@@ -1,7 +1,9 @@
-package com.codereview
+package com.codereview.homepage
 
-object JobsList {
-    val list = listOf(
+import com.codereview.R
+
+class JobsRepository {
+    fun getJobsList() = listOf(
         JobSpec("Python", R.drawable.python),
         JobSpec("Java", R.drawable.java),
         JobSpec("JavaScript", R.drawable.js),

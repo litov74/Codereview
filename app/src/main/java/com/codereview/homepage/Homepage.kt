@@ -1,10 +1,8 @@
-package com.codereview
+package com.codereview.homepage
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,37 +28,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.window.core.layout.WindowSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
+import com.codereview.CodeReviewApplication
+import com.codereview.R
 
 @Composable
-fun HomePage() {
+fun HomePage(
+    viewModel: HomepageViewModel =
+        viewModel(factory = HomepageViewModelFactory(CodeReviewApplication().jobsRepository)),
+    onNavigateToVacancies: (String) -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val screenWidth = maxWidth
+        val gridCellsNumber = getGridCellsNumber()
 
-            val columnsNumber = when {
-                screenWidth > 600.dp -> 3
-                screenWidth > 500.dp -> 2
-                else -> 1
-            }
-
-            Column {
-                ShowTitle()
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    ShowGrid(columnsNumber = columnsNumber)
-                }
+        Column {
+            ShowTitle()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                ShowGrid(
+                    columnsNumber = gridCellsNumber,
+                    jobsList = viewModel.listOfJobs,
+                    onClicked = onNavigateToVacancies
+                )
             }
         }
     }
@@ -88,7 +89,11 @@ fun ShowTitle() {
 }
 
 @Composable
-fun ShowGrid(columnsNumber: Int, jobsList: List<JobSpec> = JobsList.list) {
+fun ShowGrid(
+    columnsNumber: Int,
+    jobsList: List<JobSpec>,
+    onClicked: (String) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columnsNumber),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -97,20 +102,28 @@ fun ShowGrid(columnsNumber: Int, jobsList: List<JobSpec> = JobsList.list) {
         modifier = Modifier.fillMaxWidth()
     ) {
         items(items = jobsList) { job ->
-            JobCard(job.jobTitle, job.logoId)
+            JobCard(
+                jobTitle = job.jobTitle,
+                logoId = job.logoId,
+                onSelected = onClicked
+            )
         }
     }
 }
 
 @Composable
-fun JobCard(jobTitle: String, logoId: Int) {
+fun JobCard(
+    jobTitle: String,
+    logoId: Int,
+    onSelected: (String) -> Unit
+) {
     Surface(
         color = MaterialTheme.colorScheme.onPrimary,
         shape = RoundedCornerShape(15.dp),
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
         modifier = Modifier.wrapContentWidth(),
-        onClick = { TODO() }
+        onClick = { onSelected("/$jobTitle") }
     ) {
         Row(modifier = Modifier.padding(10.dp)) {
             Column(modifier = Modifier.width(130.dp)) {
@@ -161,27 +174,15 @@ fun JobCard(jobTitle: String, logoId: Int) {
     }
 }
 
-@Preview
 @Composable
-fun JobCardPreview() {
-    JobCard("Python", logoId = R.drawable.python)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomePagePreview() {
-    HomePage()
-}
-
-@Preview(
-    showBackground = true,
-    name = "Landscape Preview",
-    widthDp = 720,
-    heightDp = 360,
-    uiMode = Configuration.ORIENTATION_LANDSCAPE
-)
-@Composable
-fun HomePageLandscapePreview() {
-    HomePage()
+fun getGridCellsNumber(
+    windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+): Int {
+    return when (windowSizeClass.windowWidthSizeClass) {
+        WindowWidthSizeClass.COMPACT -> 1
+        WindowWidthSizeClass.MEDIUM -> 2
+        WindowWidthSizeClass.EXPANDED -> 3
+        else -> 1
+    }
 }
 
