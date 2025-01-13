@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
             CodeReviewTheme {
                 val viewModel: VacanciesViewModel = hiltViewModel()
                 val listVac = viewModel.result
-                VacancyList(listVac)
+                VacancyList(vacancies = listVac, vacanciesArg = null)
             }
         }
     }
