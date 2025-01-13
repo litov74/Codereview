@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,17 +39,27 @@ fun HomePage() {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        val gridCellsNumber = getGridCellsNumber()
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val screenWidth = maxWidth
 
-        Column {
-            ShowTitle()
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                ShowGrid(columnsNumber = gridCellsNumber)
+            val columnsNumber = when {
+                screenWidth > 600.dp -> 3
+                screenWidth > 500.dp -> 2
+                else -> 1
+            }
+
+            Column {
+                ShowTitle()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ShowGrid(columnsNumber = columnsNumber)
+                }
             }
         }
     }
@@ -100,7 +110,7 @@ fun JobCard(jobTitle: String, logoId: Int) {
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
         modifier = Modifier.wrapContentWidth(),
-        onClick = { }
+        onClick = { TODO() }
     ) {
         Row(modifier = Modifier.padding(10.dp)) {
             Column(modifier = Modifier.width(130.dp)) {
@@ -148,16 +158,6 @@ fun JobCard(jobTitle: String, logoId: Int) {
                 contentDescription = jobTitle
             )
         }
-    }
-}
-
-@Composable
-fun getGridCellsNumber(): Int {
-    val configuration = LocalConfiguration.current
-    return when (configuration.orientation) {
-        Configuration.ORIENTATION_LANDSCAPE -> 3
-        Configuration.ORIENTATION_PORTRAIT -> 1
-        else -> 1
     }
 }
 
