@@ -21,3 +21,7 @@ local.properties
 /buildSrc/.gradle/
 /buildSrc/build/
 /gradle/wrapper/gradle-wrapper.jar
+/feature_vacansies/src/androidTest/
+/feature_vacansies/src/test/
+/feature_jobs/src/androidTest/
+/feature_jobs/src/test/

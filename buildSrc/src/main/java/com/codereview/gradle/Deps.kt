@@ -25,6 +25,8 @@ object Deps {
     const val composeNavigation = Libraries.composeNavigation
     const val hiltNavigation = Libraries.hiltNavigation
     const val kotlinCollectionsImmutable = Libraries.kotlinCollectionsImmutable
+    const val windowCore = Libraries.windowCore
+    const val material3Adaptive = Libraries.material3Adaptive
 
     const val retrofit = Libraries.retrofit
     const val retrofitConverterGson = Libraries.retrofitConverterGson
@@ -118,6 +120,7 @@ object Deps {
         const val activityCompose = "androidx.activity:activity-compose:1.4.0"
         const val composeMaterial3 = "androidx.compose.material3:material3:1.3.0"
         const val composeMaterial3Navigation = "androidx.compose.material3:material3-adaptive-navigation-suite-android:1.3.0-rc01"
+        const val material3Adaptive = "androidx.compose.material3.adaptive:adaptive-android:1.0.0"
         const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
 
         const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
@@ -160,6 +163,8 @@ object Deps {
         const val coil = "io.coil-kt:coil-compose:${Versions.coil}"
 
         const val integrationLibrary = "com.github.evotor:integration-library:v0.6.19"
+
+        const val windowCore = "androidx.window:window-core-android:1.3.0"
 
 
         object Versions {
