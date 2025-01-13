@@ -16,3 +16,6 @@ local.properties
 /.idea
 /.kotlin
 /app/build/
+/buildSrc/.gradle/
+/buildSrc/build/
+/gradle/
