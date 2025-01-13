@@ -13,9 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
-/.idea
+/.idea/
 /.kotlin
 /app/build/
+/app/src/androidTest/
+/app/src/test/
 /buildSrc/.gradle/
 /buildSrc/build/
 /gradle/wrapper/gradle-wrapper.jar
