@@ -12,8 +12,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Query
 import javax.inject.Singleton
 
 
@@ -52,16 +50,4 @@ object NetworkModule {
     fun getApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
-}
-
-interface ApiService {
-    @GET("api/jobs/")
-    suspend fun readVacancies(
-        @Query("limit") limit: Int
-    ): List<VacancyNet>
-
-    @GET("api/jobs/")
-    suspend fun readVacancy(
-        @Query("vacancy_id") vacancyId: Int
-    ): VacancyNet
 }
