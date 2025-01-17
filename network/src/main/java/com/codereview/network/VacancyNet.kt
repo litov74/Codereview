@@ -3,16 +3,16 @@ package com.codereview.network
 import kotlinx.serialization.SerialName
 
 data class VacancyNet(
-    val id: Int,
-    val active: Boolean,
+    @SerialName("id") val id: Int,
+    @SerialName("active") val active: Boolean,
     @SerialName("company_name") val companyName: String,
-    val salary: String,
-    val speciality: String,
-    val remote: Boolean,
-    val url: String,
-    val description: String,
-    val title: String,
+    @SerialName("salary") val salary: String,
+    @SerialName("speciality") val speciality: String,
+    @SerialName("remote") val remote: Boolean,
+    @SerialName("url") val url: String,
+    @SerialName("description") val description: String,
+    @SerialName("title") val title: String,
     @SerialName("external_id") val externalId: Int,
-    val location: String,
-    val internship: Boolean
+    @SerialName("location") val location: String,
+    @SerialName("internship") val internship: Boolean
 )

@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 android {
