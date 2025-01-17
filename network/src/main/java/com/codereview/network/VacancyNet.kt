@@ -1,18 +1,20 @@
 package com.codereview.network
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class VacancyNet(
-    @SerialName("id") val id: Int,
-    @SerialName("active") val active: Boolean,
-    @SerialName("company_name") val companyName: String,
-    @SerialName("salary") val salary: String,
-    @SerialName("speciality") val speciality: String,
-    @SerialName("remote") val remote: Boolean,
-    @SerialName("url") val url: String,
-    @SerialName("description") val description: String,
-    @SerialName("title") val title: String,
-    @SerialName("external_id") val externalId: Int,
-    @SerialName("location") val location: String,
-    @SerialName("internship") val internship: Boolean
+    @SerialName("id") val id: Int? = null,
+    @SerialName("active") val active: Boolean? = null,
+    @SerialName("company_name") val companyName: String? = null,
+    @SerialName("salary") val salary: String? = null,
+    @SerialName("speciality") val speciality: String? = null,
+    @SerialName("remote") val remote: Boolean? = null,
+    @SerialName("url") val url: String? = null,
+    @SerialName("description") val description: String? = null,
+    @SerialName("title") val title: String? = null,
+    @SerialName("external_id") val externalId: Int? = null,
+    @SerialName("location") val location: String? = null,
+    @SerialName("internship") val internship: Boolean? = null
 )
