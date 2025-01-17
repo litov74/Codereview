@@ -1,18 +1,18 @@
 package com.codereview.network
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class VacancyNet(
     val id: Int,
     val active: Boolean,
-    @SerializedName("company_name") val companyName: String, // OR use @SerialName and Kotlin serialization?
+    @SerialName("company_name") val companyName: String,
     val salary: String,
     val speciality: String,
     val remote: Boolean,
     val url: String,
     val description: String,
     val title: String,
-    @SerializedName("external_id") val externalId: Int, // OR use @SerialName and Kotlin serialization?
+    @SerialName("external_id") val externalId: Int,
     val location: String,
     val internship: Boolean
 )

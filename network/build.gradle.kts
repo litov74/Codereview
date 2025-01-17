@@ -46,9 +46,14 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
-    implementation(Deps.retrofit)
-    implementation(Deps.retrofitConverterGson)
-
     implementation(Deps.hilt)
     kapt(Deps.hiltKapt)
+
+    implementation(Deps.retrofit)
+    implementation(Deps.kotlinSerialization)
+    implementation(Deps.serializationConverter)
+    implementation(Deps.okHttp)
+    implementation(Deps.okHttpLoggingInterceptor)
+    debugImplementation(Deps.chucker)
+    releaseImplementation(Deps.chuckerRelease)
 }
