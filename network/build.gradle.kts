@@ -4,8 +4,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
-    id("kotlin-kapt")
     kotlin("plugin.serialization") version "2.1.0"
+    id("kotlin-kapt")
 }
 
 android {
@@ -39,22 +39,23 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation(project(":feature_vacansies"))
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
+    implementation(Deps.androidxCore)
+    implementation(Deps.kotlinCollectionsImmutable)
     implementation(Deps.hilt)
     kapt(Deps.hiltKapt)
 
     implementation(Deps.retrofit)
+    implementation(Deps.retrofitConverterGson)
+    implementation(Deps.coroutinesCore)
+    implementation(Deps.coroutinesAndroid)
+    debugImplementation(Deps.chucker)
+    releaseImplementation(Deps.chuckerRelease)
     implementation(Deps.kotlinSerialization)
     implementation(Deps.serializationConverter)
     implementation(Deps.okHttp)
     implementation(Deps.okHttpLoggingInterceptor)
-    debugImplementation(Deps.chucker)
-    releaseImplementation(Deps.chuckerRelease)
+
+    testImplementation(Deps.TestDeps.jUnit)
+    androidTestImplementation(Deps.TestDeps.androidxJUnit)
+    androidTestImplementation(Deps.TestDeps.androidxEspressoCore)
 }
