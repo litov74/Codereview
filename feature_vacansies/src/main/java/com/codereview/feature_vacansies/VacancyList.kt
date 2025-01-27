@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -28,18 +25,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.codereview.core.theme.PurpleGrey80
 import com.codereview.core.theme.Whisper
 import com.codereview.core.theme.toSalary
 import com.codereview.core.theme.toShiftType
-import com.codereview.feature_vacansies.data.Vacancy
-import com.codereview.feature_vacansies.data.getVacancies
+import com.codereview.repository.vacancy_repository.Vacancy
 import com.codereview.core.R as coreR
 
 @Composable
 fun VacancyList(
     vacanciesArg: String?,
-    vacancies: List<Vacancy> = getVacancies()
+    vacancies: List<Vacancy> = listOf(),
+    viewModel: VacanciesViewModel = hiltViewModel()
 ) {
     LazyColumn(
         Modifier
@@ -71,18 +69,18 @@ fun VacancyItem(
             modifier = Modifier.padding(16.dp) //только для общего паддинга, т.к. мы не используем scaffold
         ) {
             Text(
-                text = vacancy.company,
+                text = vacancy.companyName,
                 color = Color.DarkGray,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                vacancy.vacancy,
+                vacancy.title,
                 color = Color.Black,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
-            LazyVerticalGrid(
+            /*LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 150.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -97,9 +95,9 @@ fun VacancyItem(
                         description = item.second
                     )
                 }
-            }
+            }*/
             Text(
-                text = "Опубликовано: ${vacancy.published}",
+                text = "Опубликовано: ${vacancy.companyName}",
                 color = Color.Gray,
                 fontSize = 17.sp
             )

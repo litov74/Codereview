@@ -61,6 +61,7 @@ dependencies {
     kapt(Deps.hiltKapt)
 
     implementation(project(":core"))
+    implementation(project(":repository"))
 
     androidTestImplementation(Deps.TestDeps.androidxEspressoCore)
     androidTestImplementation(Deps.TestDeps.jUnit)

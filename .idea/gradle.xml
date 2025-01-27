@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/feature_jobs" />
             <option value="$PROJECT_DIR$/feature_vacansies" />
             <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/repository" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
