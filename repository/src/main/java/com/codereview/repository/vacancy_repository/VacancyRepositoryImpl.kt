@@ -1,4 +1,4 @@
-package com.codereview.repository
+package com.codereview.repository.vacancy_repository
 
 import com.codereview.network.ApiHelper
 import kotlinx.coroutines.flow.Flow
@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class NetworkRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) :
-    NetworkRepository {
+class VacancyRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) :
+    VacancyRepository {
 
     override fun getVacancyList(limit: Int): Flow<List<Vacancy>> = flow {
         val vacancies = apiHelper.getVacancyList(limit).map { vacancyNetList ->

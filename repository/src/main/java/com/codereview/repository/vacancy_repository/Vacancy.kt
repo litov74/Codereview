@@ -1,7 +1,7 @@
-package com.codereview.repository
+package com.codereview.repository.vacancy_repository
 
 data class Vacancy(
-    val id: Int,
+    val id: String,
     val active: Boolean,
     val companyName: String,
     val salary: String,

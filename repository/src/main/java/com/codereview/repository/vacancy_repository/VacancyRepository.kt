@@ -1,8 +1,8 @@
-package com.codereview.repository
+package com.codereview.repository.vacancy_repository
 
 import kotlinx.coroutines.flow.Flow
 
-interface NetworkRepository {
+interface VacancyRepository {
     fun getVacancyList(limit: Int = 10): Flow<List<Vacancy>>
     fun getVacancyDetails(id: Int): Flow<Vacancy>
 }
