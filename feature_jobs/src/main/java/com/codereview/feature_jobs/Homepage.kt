@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
-import com.codereview.feature_jobs.data.JobSpec
+import com.codereview.repository.jobs_repository.JobSpec
 import com.codereview.core.R as coreR
 
 @Composable
@@ -57,7 +58,7 @@ fun HomePage(
             ) {
                 ShowGrid(
                     columnsNumber = gridCellsNumber,
-                    jobsList = viewModel.listOfJobs,
+                    jobsList = viewModel.jobList.collectAsState().value,
                     onClicked = onNavigateToVacancies
                 )
             }
