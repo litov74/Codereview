@@ -44,6 +44,7 @@ dependencies {
     androidTestImplementation(Deps.TestDeps.androidxEspressoCore)
 
     implementation(project(":network"))
+    implementation(project(":core"))
 
     implementation(Deps.hilt)
     kapt(Deps.hiltKapt)
