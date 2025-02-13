@@ -1,3 +1,3 @@
 package com.codereview.repository.jobs_repository
 
-data class JobSpec(val jobTitle: String, val logoId: Int)
+data class JobSpec(val jobTitle: String, val specialities: String, val logoId: Int)
