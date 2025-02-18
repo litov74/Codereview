@@ -105,6 +105,7 @@ fun ShowGrid(
             JobCard(
                 jobTitle = job.jobTitle,
                 logoId = job.logoId,
+                specialities = job.specialities,
                 onSelected = onClicked
             )
         }
@@ -114,6 +115,7 @@ fun ShowGrid(
 @Composable
 fun JobCard(
     jobTitle: String,
+    specialities: String,
     logoId: Int,
     onSelected: (String) -> Unit
 ) {
@@ -123,7 +125,7 @@ fun JobCard(
         shadowElevation = 8.dp,
         tonalElevation = 8.dp,
         modifier = Modifier.wrapContentWidth(),
-        onClick = { onSelected("/$jobTitle") }
+        onClick = { onSelected("/$specialities") } // specialities
     ) {
         Row(modifier = Modifier.padding(10.dp)) {
             Column(modifier = Modifier.width(130.dp)) {
