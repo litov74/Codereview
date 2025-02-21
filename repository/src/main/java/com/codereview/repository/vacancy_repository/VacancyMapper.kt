@@ -1,6 +1,6 @@
 package com.codereview.repository.vacancy_repository
 
-import com.codereview.network.VacancyNet
+import com.codereview.network.model.VacancyNet
 
 fun VacancyNet.toVacancy(): Vacancy = Vacancy(
     id = id.toString(),

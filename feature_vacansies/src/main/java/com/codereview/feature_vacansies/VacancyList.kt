@@ -17,6 +17,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.codereview.core.theme.PurpleGrey80
 import com.codereview.core.theme.Whisper
 import com.codereview.core.theme.toSalary
@@ -36,16 +40,26 @@ import com.codereview.core.R as coreR
 @Composable
 fun VacancyList(
     vacanciesArg: String?,
-    vacancies: List<Vacancy> = listOf(),
     viewModel: VacanciesViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = viewModel) {
+        viewModel.getVacancies(vacanciesArg ?: "")
+    }
+
     LazyColumn(
         Modifier
             .fillMaxSize()
             .background(color = PurpleGrey80),
     ) {
-        items(vacancies) {
-            VacancyItem(it) { id -> Log.d("onItemClick", id) }
+        items(uiState.vacancies) { vacancy ->
+            VacancyItem(
+                vacancy = vacancy,
+                onItemClick = {
+                    Log.d("TAG", "VacancyList: $it")
+                }
+            )
         }
     }
 }

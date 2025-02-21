@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "http://194.87.151.162:8000/"
+    private const val BASE_URL = "https://jobs.yourcodereview.com/api/"
 
     private val contentType = "application/json".toMediaType()
     private val json = Json { ignoreUnknownKeys = true }
