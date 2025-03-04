@@ -10,8 +10,14 @@ import javax.inject.Inject
 class VacancyRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) :
     VacancyRepository {
 
-    override fun getVacancyList(limit: Int): Flow<List<Vacancy>> = flow {
-        val vacancies = apiHelper.getVacancyList(limit).map { vacancyNetList ->
+    override fun getVacancyList(
+        limit: Int,
+        specialities: String,
+    ): Flow<List<Vacancy>> = flow {
+        val vacancies = apiHelper.getVacancyList(
+            limit = limit,
+            specialities = specialities
+        ).map { vacancyNetList ->
             vacancyNetList.map { vacancyNetItem -> vacancyNetItem.toVacancy() }
         }
         emitAll(vacancies)
