@@ -9,5 +9,5 @@ data class VacanciesNet(
     @SerialName("total_count")
     val totalCount: Int,
     @SerialName("data")
-    val `data`: List<VacancyNet>
+    val `data`: List<VacancyNet>,
 )
