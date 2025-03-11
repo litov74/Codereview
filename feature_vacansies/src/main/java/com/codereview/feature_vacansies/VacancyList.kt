@@ -56,9 +56,7 @@ fun VacancyList(
         items(uiState.vacancies) { vacancy ->
             VacancyItem(
                 vacancy = vacancy,
-                onItemClick = {
-                    Log.d("TAG", "VacancyList: $it")
-                }
+                onItemClick = viewModel::onVacancyClick
             )
         }
     }
@@ -75,7 +73,7 @@ fun VacancyItem(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(32.dp))
             .background(color = Color.White)
-            .clickable { onItemClick(vacancy.id) },
+            .clickable { onItemClick(vacancy.url) },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {

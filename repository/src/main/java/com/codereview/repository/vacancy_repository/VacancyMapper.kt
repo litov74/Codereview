@@ -12,7 +12,7 @@ fun VacancyNet.toVacancy(): Vacancy = Vacancy(
     url = url.orEmpty(),
     description = description.orEmpty(),
     title = title.toString(),
-    externalId = externalId ?: 0,
+    externalId = externalId ?: "",
     location = location.orEmpty(),
     internship = internship ?: false
 )

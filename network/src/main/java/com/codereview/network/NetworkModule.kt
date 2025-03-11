@@ -1,9 +1,9 @@
 package com.codereview.network
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,43 +12,71 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+private val json: Json = Json {
+    ignoreUnknownKeys = true
+    coerceInputValues = true
+    isLenient = true
+}
+
+private const val BASE_URL = "https://jobs.yourcodereview.com/api/"
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
-    private const val BASE_URL = "https://jobs.yourcodereview.com/api/"
+interface NetworkModule {
 
-    private val contentType = "application/json".toMediaType()
-    private val json = Json { ignoreUnknownKeys = true }
+    companion object {
+        @Singleton
+        @Provides
+        fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor()
+            .apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 
-    @Provides
-    @Singleton
-    fun createOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        val chuckerInterceptor = ChuckerInterceptor.Builder(context)
-            .alwaysReadResponseBody(true)
-            .build()
+        @Singleton
+        @Provides
+        fun provideOkHttpClient(
+            @ApplicationContext context: Context,
+            httpLoggingInterceptor: HttpLoggingInterceptor,
+        ): OkHttpClient =
+            UnsafeOkHttpClient
+                .getUnsafeOkHttpClient()
+                .newBuilder()
+                .connectTimeout(1, TimeUnit.DAYS)
+                .readTimeout(1, TimeUnit.DAYS)
+                .writeTimeout(1, TimeUnit.DAYS)
+                .retryOnConnectionFailure(false)
+                .callTimeout(1, TimeUnit.DAYS)
+                .hostnameVerifier({ hostname, session -> true })
+                .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(
+                    ChuckerInterceptor.Builder(context)
+                        .collector(ChuckerCollector(context))
+                        .maxContentLength(250000L)
+                        .redactHeaders(emptySet())
+                        .alwaysReadResponseBody(false)
+                        .build()
+                )
+                .build()
 
-        return OkHttpClient.Builder()
-            .addInterceptor(chuckerInterceptor)
-            .build()
-    }
 
-    @Provides
-    @Singleton
-    fun retrofitInit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
+        @Singleton
+        @Provides
+        fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+            .addConverterFactory(
+                json.asConverterFactory(contentType = "application/json".toMediaType())
+            )
             .baseUrl(BASE_URL)
-            .addConverterFactory(json.asConverterFactory(contentType))
             .client(okHttpClient)
             .build()
-    }
 
-    @Provides
-    @Singleton
-    fun getApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+        @Singleton
+        @Provides
+        fun provideApiService(retrofit: Retrofit): ApiService =
+            retrofit.create(ApiService::class.java)
     }
 }

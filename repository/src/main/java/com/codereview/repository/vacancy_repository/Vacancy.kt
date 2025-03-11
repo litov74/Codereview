@@ -10,7 +10,7 @@ data class Vacancy(
     val url: String,
     val description: String,
     val title: String,
-    val externalId: Int,
+    val externalId: String,
     val location: String,
     val internship: Boolean
 )

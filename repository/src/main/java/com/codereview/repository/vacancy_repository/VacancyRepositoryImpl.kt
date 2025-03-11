@@ -18,7 +18,7 @@ class VacancyRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper
             limit = limit,
             specialities = specialities
         ).map { vacancyNetList ->
-            vacancyNetList.map { vacancyNetItem -> vacancyNetItem.toVacancy() }
+            vacancyNetList.data.map { vacancyNetItem -> vacancyNetItem.toVacancy() }
         }
         emitAll(vacancies)
     }
