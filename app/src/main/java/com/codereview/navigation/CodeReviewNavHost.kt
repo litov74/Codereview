@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codereview.feature_jobs.HomePage
+import com.codereview.feature_jobs.HomeScreen
+import com.codereview.feature_vacansies.VacanciesScreen
 import com.codereview.feature_vacansies.VacancyList
 
 private const val VACANCIES_ARG = "vacanciesArg"
@@ -17,15 +19,16 @@ fun CodeReviewNavHost(navHostController: NavHostController) {
     ) {
 
         composable(route = HomePageDestination.route) {
-            HomePage(onNavigateToVacancies = { vacanciesArg ->
-                navHostController
-                    .navigateSingleTopTo(VacanciesDestination.route + vacanciesArg)
-            })
+            HomeScreen(
+                onNavigateToVacancies = { vacanciesArg ->
+                    navHostController
+                        .navigateSingleTopTo(VacanciesDestination.route + vacanciesArg)
+                })
         }
 
         composable(route = VacanciesDestination.route + "/{$VACANCIES_ARG}") { entry ->
             val vacanciesArg = entry.arguments?.getString(VACANCIES_ARG)
-            VacancyList(vacanciesArg = vacanciesArg)
+            VacanciesScreen(vacanciesArg = vacanciesArg)
         }
     }
 }

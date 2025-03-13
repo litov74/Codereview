@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,29 +39,58 @@ import com.codereview.core.theme.PurpleGrey80
 import com.codereview.core.theme.Whisper
 import com.codereview.core.theme.toSalary
 import com.codereview.core.theme.toShiftType
+import com.codereview.feature_vacansies.state.VacanciesState
+import com.codereview.feature_vacansies.state.VacanciesUiState
 import com.codereview.repository.vacancy_repository.Vacancy
 import com.codereview.core.R as coreR
 
 @Composable
-fun VacancyList(
+fun VacanciesScreen(
+    modifier: Modifier = Modifier,
     vacanciesArg: String?,
-    viewModel: VacanciesViewModel = hiltViewModel()
+    viewModel: VacanciesViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = viewModel) {
         viewModel.getVacancies(vacanciesArg ?: "")
     }
 
+    when (state) {
+        VacanciesState.Loading -> VacanciesLoading()
+
+        is VacanciesState.Error -> {
+            val message = (state as VacanciesState.Error).message
+            VacanciesError(
+                errorMessage = message,
+                onRefreshVacancies = { viewModel.getVacancies(vacanciesArg ?: "") }
+            )
+        }
+
+        is VacanciesState.Ready -> {
+            val vacancies = (state as VacanciesState.Ready).data
+            VacancyList(
+                vacancies = vacancies,
+                onVacancyClick = viewModel::onVacancyClick
+            )
+        }
+    }
+}
+
+@Composable
+fun VacancyList(
+    vacancies: List<Vacancy>,
+    onVacancyClick: (String) -> Unit,
+) {
     LazyColumn(
         Modifier
             .fillMaxSize()
             .background(color = PurpleGrey80),
     ) {
-        items(uiState.vacancies) { vacancy ->
+        items(vacancies) { vacancy ->
             VacancyItem(
                 vacancy = vacancy,
-                onItemClick = viewModel::onVacancyClick
+                onItemClick = onVacancyClick
             )
         }
     }
@@ -112,6 +146,62 @@ fun VacancyItem(
                 text = "Опубликовано: ${vacancy.companyName}",
                 color = Color.Gray,
                 fontSize = 17.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun VacanciesLoading(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = PurpleGrey80)
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun VacanciesError(
+    modifier: Modifier = Modifier,
+    errorMessage: String?,
+    onRefreshVacancies: () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(16.dp),
+            text = errorMessage ?: "Unknown error",
+            color = Color.Red,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1
+        )
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(32.dp))
+                .clickable(onClick = onRefreshVacancies),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(8.dp),
+                text = "Обновить"
+            )
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = null
             )
         }
     }
