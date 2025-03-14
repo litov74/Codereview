@@ -13,4 +13,21 @@ data class Vacancy(
     val externalId: String,
     val location: String,
     val internship: Boolean
-)
+) {
+
+    fun getExtras(): Iterator<Pair<String, String>> {
+        return listOf(
+            Pair("З/п: ", salary.toSalary()),
+            Pair("Удаленно: ", remote.humanize()),
+            Pair("Адрес: ", location),
+            Pair("Стажировка: ", internship.humanize()),
+        ).iterator()
+    }
+
+    private fun Boolean.humanize(): String = if (this) "Да" else "Нет"
+
+    private fun String?.toSalary(): String =
+        if (this?.isBlank() == true) "з/п не указана"
+        else "$this"
+
+}

@@ -2,6 +2,8 @@ package com.codereview.feature_jobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.codereview.feature_jobs.state.HomeState
+import com.codereview.feature_jobs.state.HomeUiState
 import com.codereview.repository.jobs_repository.JobRepository
 import com.codereview.repository.jobs_repository.JobSpec
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,19 +20,21 @@ class HomepageViewModel @Inject constructor(
     private val repository: JobRepository
 ) : ViewModel() {
 
-    private val _jobList = MutableStateFlow<List<JobSpec>>(emptyList())
-    val jobList: StateFlow<List<JobSpec>> get() = _jobList
+    private val _state = MutableStateFlow<HomeState>(HomeState.Loading)
+    val state: StateFlow<HomeState> = _state
 
-    private val _errorFlow = MutableSharedFlow<String>()
-    val errorFlow: SharedFlow<String> get() = _errorFlow // Add a snackbar?
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState
 
     init {
         viewModelScope.launch {
-            repository.getJobList().catch {
-                _errorFlow.emit("Unable to fetch job list")
+            _state.value = HomeState.Loading
+            repository.getJobList()
+                .catch {
+                    _state.emit(HomeState.Error(it.message))
             }
                 .collect { result ->
-                    _jobList.emit(result)
+                    _state.emit(HomeState.Ready(result))
                 }
         }
     }
