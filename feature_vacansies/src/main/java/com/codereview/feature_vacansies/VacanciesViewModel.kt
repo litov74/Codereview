@@ -12,6 +12,7 @@ import com.codereview.repository.vacancy_repository.Vacancy
 import com.codereview.repository.vacancy_repository.VacancyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +38,7 @@ class VacanciesViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             _state.value = VacanciesState.Loading
+            delay(2000L)
             Log.d("VacanciesViewModel", "getVacancies: ${uiState.value.isLoading}")
             repo.getVacancyList(
                 specialities = specialities
