@@ -13,4 +13,7 @@ val Pink40 = Color(0xFF7D5260)
 val WhiteSmoke = Color(0xF5F5F5F5)
 val Whisper = Color(0xECECECEC)
 
+val LightGray = Color(0xFFE0E0E0)
+val OffWhite = Color(0xFFF5F5F5)
+
 
