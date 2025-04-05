@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +36,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.codereview.core.theme.PurpleGrey80
 import com.codereview.core.theme.Whisper
+import com.codereview.core.theme.ui.shimmerEffect
 import com.codereview.feature_vacansies.state.VacanciesState
 import com.codereview.repository.vacancy_repository.Vacancy
 import com.codereview.core.R as coreR
@@ -145,17 +145,25 @@ fun VacancyItem(
 }
 
 @Composable
-fun VacanciesLoading(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = PurpleGrey80)
+fun VacanciesLoading() {
+    Column(
+        modifier = Modifier
+            .padding(15.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier.align(Alignment.Center)
-        )
+        repeat(3) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(start = 16.dp, end = 16.dp)
+                    .clip(shape = RoundedCornerShape(32.dp))
+                    .shimmerEffect()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
     }
 }
 

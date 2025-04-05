@@ -7,6 +7,7 @@ import com.codereview.feature_jobs.state.HomeUiState
 import com.codereview.repository.jobs_repository.JobRepository
 import com.codereview.repository.jobs_repository.JobSpec
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -29,6 +30,7 @@ class HomepageViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _state.value = HomeState.Loading
+            delay(2000)
             repository.getJobList()
                 .catch {
                     _state.emit(HomeState.Error(it.message))

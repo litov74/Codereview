@@ -1,5 +1,6 @@
 package com.codereview.feature_jobs
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,16 +22,15 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.codereview.core.theme.ui.shimmerEffect
 import com.codereview.feature_jobs.state.HomeState
 import com.codereview.repository.jobs_repository.JobSpec
 import com.codereview.core.R as coreR
@@ -52,21 +54,26 @@ fun HomeScreen(
     onNavigateToVacancies: (String) -> Unit
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-
+    Log.d("HomeScreenS", "HomeScreen create")
     when (val currentState = state.value) {
-        is HomeState.Loading -> HomeLoading()
+        is HomeState.Loading -> {
+            Log.d("HomeScreenS", "State: Loading")
+            HomeLoading()
+        }
+
         is HomeState.Ready -> {
+            Log.d("HomeScreenS", "State: Ready")
             HomePage(
                 currentState.data,
                 onNavigateToVacancies
             )
         }
+
         is HomeState.Error -> HomeError(
             errorMessage = currentState.message,
             onRefreshJobs = { }
         )
     }
-
 }
 
 @Composable
@@ -209,15 +216,32 @@ fun JobCard(
 }
 
 @Composable
-fun HomeLoading(
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
+fun HomeLoading() {
+    Column(
+        modifier = Modifier
+            .padding(15.dp)
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircularProgressIndicator()
+        repeat(4) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp)
+                    .height(24.dp)
+                    .shimmerEffect()
+            )
+        }
+        Spacer(modifier = Modifier.height(15.dp))
+        repeat(5) {
+            Box(
+                modifier = Modifier
+                    .size(width = 190.dp, height = 120.dp)
+                    .clip(shape = RoundedCornerShape(16.dp))
+                    .shimmerEffect()
+            )
+        }
     }
 }
 
