@@ -11,3 +11,7 @@ object HomePageDestination : Route {
 object VacanciesDestination : Route {
     override val route: String = "vacancies"
 }
+
+object VacancyDestination: Route {
+    override val route: String = "vacancy"
+}

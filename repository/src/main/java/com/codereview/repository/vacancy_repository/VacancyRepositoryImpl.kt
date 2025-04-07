@@ -23,7 +23,7 @@ class VacancyRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper
         emitAll(vacancies)
     }
 
-    override fun getVacancyDetails(id: Int): Flow<Vacancy> = flow {
+    override fun getVacancyDetails(id: String): Flow<Vacancy> = flow {
         val vacancy = apiHelper.getVacancyDetails(id).map { vacancyNet -> vacancyNet.toVacancy() }
         emitAll(vacancy)
     }

@@ -82,6 +82,7 @@ dependencies {
     implementation(project(":feature_jobs"))
     implementation(project(":feature_vacansies"))
     implementation(project(":core"))
+    implementation(project(":feature_vacancy"))
 
     androidTestImplementation(Deps.TestDeps.androidxEspressoCore)
     androidTestImplementation(Deps.TestDeps.jUnit)

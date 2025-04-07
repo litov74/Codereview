@@ -14,5 +14,6 @@ fun VacancyNet.toVacancy(): Vacancy = Vacancy(
     title = title.toString(),
     externalId = externalId ?: "",
     location = location.orEmpty(),
-    internship = internship ?: false
+    internship = internship ?: false,
+    datePublication = datePublication ?: ""
 )
