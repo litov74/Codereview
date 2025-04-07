@@ -1,15 +1,16 @@
 package com.codereview.network.model
 
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
+@InternalSerializationApi @Serializable
 data class VacancyList(
     @SerialName("total_count" ) var totalCount : Int?            = null,
     @SerialName("data"        ) var data       : ArrayList<VacancyNet> = arrayListOf()
 )
 
-@Serializable
+@InternalSerializationApi @Serializable
 data class VacancyNet(
     @SerialName("company_name"     ) var companyName     : String?  = null,
     @SerialName("salary"           ) var salary          : String?  = null,

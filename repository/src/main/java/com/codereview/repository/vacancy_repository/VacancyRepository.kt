@@ -9,6 +9,6 @@ interface VacancyRepository {
         specialities: String,
     ): Flow<List<Vacancy>>
 
-    fun getVacancyDetails(id: Int): Flow<Vacancy>
+    fun getVacancyDetails(id: String): Flow<Vacancy>
 
 }

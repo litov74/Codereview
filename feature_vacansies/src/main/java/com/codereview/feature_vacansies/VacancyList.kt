@@ -46,6 +46,7 @@ fun VacanciesScreen(
     modifier: Modifier = Modifier,
     vacanciesArg: String?,
     viewModel: VacanciesViewModel = hiltViewModel(),
+    onNavigateToVacancy: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -68,7 +69,7 @@ fun VacanciesScreen(
             val vacancies = (state as VacanciesState.Ready).data
             VacancyList(
                 vacancies = vacancies,
-                onVacancyClick = viewModel::onVacancyClick
+                onNavigateToVacancy = onNavigateToVacancy,
             )
         }
     }
@@ -77,7 +78,7 @@ fun VacanciesScreen(
 @Composable
 fun VacancyList(
     vacancies: List<Vacancy>,
-    onVacancyClick: (String) -> Unit,
+    onNavigateToVacancy: (String) -> Unit,
 ) {
     LazyColumn(
         Modifier
@@ -87,7 +88,8 @@ fun VacancyList(
         items(vacancies) { vacancy ->
             VacancyItem(
                 vacancy = vacancy,
-                onItemClick = onVacancyClick
+                onItemClick = onNavigateToVacancy,
+                idOfVacancy = vacancy.id
             )
         }
     }
@@ -96,6 +98,7 @@ fun VacancyList(
 @Composable
 fun VacancyItem(
     vacancy: Vacancy,
+    idOfVacancy: String,
     onItemClick: (String) -> Unit,
 ) {
     Column(
@@ -104,7 +107,7 @@ fun VacancyItem(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(32.dp))
             .background(color = Color.White)
-            .clickable { onItemClick(vacancy.url) },
+            .clickable { onItemClick("/$idOfVacancy") },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
